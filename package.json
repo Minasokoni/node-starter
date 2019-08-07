@@ -1,0 +1,32 @@
+{
+  "name": "starter",
+  "version": "1.0.0",
+  "description": "Node Application Boilerplate",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "nodemon -e js,graphql --exec babel-node src/index.js",
+    "prebuild": "rm -rf dist/*",
+    "build": "babel -d ./dist ./src --copy-files",
+    "prestart": "npm run build",
+    "start": "node dist/index.js"
+  },
+  "author": "Robert Barnwell <robert@robertismy.name>",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/node": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "babel-plugin-module-resolver": "^3.2.0",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb-base": "^13.2.0",
+    "eslint-plugin-import": "^2.18.2",
+    "nodemon": "^1.19.1"
+  },
+  "dependencies": {
+    "dotenv": "^8.0.0",
+    "ejs": "^2.6.2",
+    "express": "^4.17.1",
+    "winston": "^3.2.1"
+  }
+}
