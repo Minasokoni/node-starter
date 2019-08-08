@@ -10,4 +10,4 @@ RUN yarn install
 RUN yarn global add pm2
 RUN yarn run build
 COPY . .
-CMD pm2 start dist/index.js
+CMD pm2-runtime dist/index.js
