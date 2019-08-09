@@ -3,10 +3,13 @@
 const fs = require('fs')
 const path = require('path')
 const Sequelize = require('sequelize')
+const chalk = require('chalk')
+const  { logger } = require('../utils/logger')
 
 const basename = path.basename(__filename)
 const env = process.env.NODE_ENV || 'development'
-const config = require(`${__dirname}/../config.js`)[env]
+const config = require('../config.js')[env]
+
 const db = {}
 
 let sequelize
@@ -32,5 +35,13 @@ Object.keys(db).forEach((modelName) => {
 
 db.sequelize = sequelize
 db.Sequelize = Sequelize
+
+db.sequelize
+  .authenticate()
+  .then(() => {
+    logger.info(`MYSQL Database: ${chalk.green.bold('connected')}`)
+  }).catch((err) => {
+    throw err
+  })
 
 module.exports = db

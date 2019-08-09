@@ -1,26 +1,13 @@
-import Sequelize from 'sequelize'
-import sql from '../utils/db'
+'use strict'
 
-const User = sql.define('user', {
-  id: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
-  firstname: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
-  lastname: {
-    type: Sequelize.STRING
-  },
-  email: {
-    type: Sequelize.STRING,
-    allowNull: false
+module.exports = (sequelize, DataTypes) => {
+  const User = sequelize.define('User', {
+    firstname: DataTypes.STRING,
+    lastname: DataTypes.STRING,
+    email: DataTypes.STRING
+  }, {})
+  User.associate = function (models) {
+    // associations can be defined here
   }
-}, {
-  tableName: 'Incomplete'
-})
-
-
-export default User
+  return User
+}
