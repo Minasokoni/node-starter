@@ -31,7 +31,6 @@
     "keyword-spacing": 1,
     "func-names": 0,
     "semi": ["error", "never"],
-    "quotes": [1, "single", "avoid-escape"]
   },
   "env": {
     "node": true,

@@ -1,44 +1,57 @@
 import { createLogger, format, transports } from 'winston'
+import * as Sentry from '@sentry/node'
 import config from './config'
 
 const {
-  combine, timestamp, json, colorize, printf
+  combine,
+  timestamp,
+  json,
+  colorize,
+  printf,
 } = format
 
-const { env, log } = config
+const { log } = config
 
 const custom = printf(({ level, message, timestamp }) => `${timestamp} [${level}]: ${message}`)
 
-const logger = new createLogger({
+export const logger = new createLogger({
   level: 'info',
   format: combine(
     colorize(),
     json(),
     timestamp(),
-    custom
+    custom,
   ),
   transports: [
-    new transports.File({ filename: 'error.log', level: 'error' })
-  ]
+    new transports.File({ filename: 'error.log', level: 'error' }),
+  ],
 })
 
-if (env !== 'production') {
+if (process.env.NODE_ENV !== 'production') {
   logger.add(new transports.Console({
     level: log.level,
-    format: custom
+    format: custom,
   }))
 }
 
+export const sentryLog = () => {
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+  })
 
-logger.request  = (req, res, next) => {
+  return Sentry
+}
+
+export const requestLog = (err, req, res, next) => {
   logger.info(`${req.method} ${req.originalUrl}`)
 
   res.on('finish', () => {
     logger.info(`${res.statusCode} ${res.statusMessage}; ${res.get('Content-Length') || 0}b sent`)
   })
 
-  next()
+  if (process.env.NODE_ENV === 'production') {
+    sentryLog().captureException(err)
+  }
+
+  return next()
 }
-
-
-export default logger

@@ -1,10 +1,10 @@
 import compression from 'compression'
 import express from 'express'
-import logger from './logger'
+import { requestLog } from './logger'
 import routes from '../routes'
 
 export default (app) => {
-  app.use(logger.request)
+  app.use(requestLog)
   app.use(express.json())
   app.use(compression())
   app.use(express.urlencoded({ extended: true }))

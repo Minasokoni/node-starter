@@ -1,12 +1,14 @@
 import express from 'express'
 import chalk from 'chalk'
-import logger from './utils/logger'
+import { logger, sentryLog } from './utils/logger'
 import { db } from './utils/db'
 import applyMiddleware from './utils/middleware'
 
 const app = express()
 
 applyMiddleware(app)
+
+if (process.env.NODE_ENV === 'production') app.use(sentryLog().Handlers.errorHandler())
 
 app.listen(process.env.PORT, (err) => {
   if (err) {
