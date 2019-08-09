@@ -1,32 +1,26 @@
 import express from 'express'
+import chalk from 'chalk'
 import logger from './utils/logger'
-import config from './utils/config'
-import { pool, db } from './utils/db'
+import { db } from './utils/db'
+import applyMiddleware from './utils/middleware'
 
 const app = express()
-const { port } = config
 
-db.connect((err) => {
-  if (err) throw err
-  logger.info('Connected to MYSQL Database.')
-})
+applyMiddleware(app)
 
-app.use(logger.request)
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-app.set('view engine', 'ejs')
+app.listen(process.env.PORT, (err) => {
+  if (err) {
+    logger.error(err)
+    process.exit(1)
+    return
+  }
 
-app.get('/', (req, res) => {
-  res.render('pages/index', req.query)
-})
-
-app.post('/incomplete', async (req, res) => {
-  pool.query('INSERT INTO Incomplete SET ?', req.body, (err) => {
+  db.connect((err) => {
     if (err) throw err
-    res.json({ message:'saved information' })
+    logger.info(`
+    Running on port: ${chalk.yellow.bold(process.env.PORT)}
+    Enviornment: ${chalk.green.bold(process.env.NODE_ENV)}
+    MYSQL Database: ${chalk.green.bold('connected')}
+    `)
   })
-})
-
-app.listen(port, () => {
-  logger.info(`Running on http://localhost:${port}/`)
 })
