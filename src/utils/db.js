@@ -1,4 +1,4 @@
-import mysql from 'mysql'
+import Sequelize from 'sequelize'
 
 const settings = {
   host: process.env.MYSQL_HOST_NAME,
@@ -7,5 +7,8 @@ const settings = {
   database: process.env.MYSQL_DATABASE
 }
 
-export const db = mysql.createConnection(settings)
-export const pool = mysql.createPool({ ...settings, connectionLimit: 100 })
+const sql = new Sequelize(`mysql://${settings.user}:${settings.password}@${settings.host}/${settings.database}`)
+
+export default sql
+// export const db = mysql.createConnection(settings)
+// export const pool = mysql.createPool({ ...settings, connectionLimit: 100 })

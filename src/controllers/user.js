@@ -1,9 +1,8 @@
-import { pool } from '../utils/db'
+import User from '../models/User'
 
 export default async function saveIncompleteUser(req, res, next) {
   try {
-    await pool.query('INSERT INTO Incomplete SET ?', req.body, (err) => {
-      if (err) throw err
+    await User.create(req.body).then(() => {
       res.json({ message: 'saved information' })
     })
   } catch (err) {
