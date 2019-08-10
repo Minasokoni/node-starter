@@ -11,15 +11,14 @@ services:
   #     - .:/usr/src/app
 
   db:
-    image: mysql:5.7
+    image: postgres
     restart: always
     ports:
-      - "3306:3306"
+      - "5432:5432"
     environment:
-      - MYSQL_DATABASE=node
-      - MYSQL_USER=db
-      - MYSQL_PASSWORD=root
-      - MYSQL_ROOT_PASSWORD=root
+      - POSTGRES_DB=node
+      - POSTGRES_USER=db
+      - POSTGRES_PASSWORD=root
 
   adminer:
     image: adminer

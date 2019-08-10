@@ -1,47 +1,25 @@
-'use strict'
+import fs from 'fs'
+import path from 'path'
+import knex from '../utils/db'
 
-const fs = require('fs')
-const path = require('path')
-const Sequelize = require('sequelize')
-const chalk = require('chalk')
-const  { logger } = require('../utils/logger')
+const getModelFiles = dir => fs.readdirSync(dir)
+  .filter(file => (file.indexOf('.') !== 0) && (file !== 'index.js'))
+  .map(file => path.join(dir, file))
 
-const basename = path.basename(__filename)
-const env = process.env.NODE_ENV || 'development'
-const config = require('../config.js')[env]
+// Gather up all model files (i.e., any file present in the current directory
+// that is not this file) and export them as properties of an object such that
+// they may be imported using destructuring like
+// `const { MyModel } = require('./models')` where there is a model named
+// `MyModel` present in the exported object of gathered models.
+const files = getModelFiles(__dirname)
 
-const db = {}
+const models = files.reduce((modelsObj, filename) => {
+  const initModel = require(filename)
+  const model = initModel(knex)
 
-let sequelize
-if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable], config)
-} else {
-  sequelize = new Sequelize(config.database, config.username, config.password, config)
-}
+  if (model) modelsObj[model.name] = model
 
-fs
-  .readdirSync(__dirname)
-  .filter(file => (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js'))
-  .forEach((file) => {
-    const model = sequelize.import(path.join(__dirname, file))
-    db[model.name] = model
-  })
+  return modelsObj
+}, {})
 
-Object.keys(db).forEach((modelName) => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db)
-  }
-})
-
-db.sequelize = sequelize
-db.Sequelize = Sequelize
-
-db.sequelize
-  .authenticate()
-  .then(() => {
-    logger.info(`MYSQL Database: ${chalk.green.bold('connected')}`)
-  }).catch((err) => {
-    throw err
-  })
-
-module.exports = db
+export default models

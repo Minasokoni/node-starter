@@ -1,6 +1,4 @@
 node_modules/
 dist/
-src/migrations/
-src/babel.js
-src/controllers
-src/models/
+src/utils/db.js
+src/models/index.js

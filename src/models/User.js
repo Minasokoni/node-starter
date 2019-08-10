@@ -1,13 +1,24 @@
-'use strict'
+import modelHelper from './helper'
 
-module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define('User', {
-    firstname: DataTypes.STRING,
-    lastname: DataTypes.STRING,
-    email: DataTypes.STRING
-  }, {})
-  User.associate = function (models) {
-    // associations can be defined here
+export default (knex) => {
+  const helper = modelHelper({
+    knex,
+    name: 'User',
+    tableName: 'users',
+    selectableProps: [
+      'id',
+      'firstname',
+      'lastname',
+      'email',
+      'updated_at',
+      'created_at'
+    ]
+  })
+
+  const create = props => helper.create(props)
+
+  return {
+    ...helper,
+    create
   }
-  return User
 }
