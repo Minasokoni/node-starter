@@ -5,9 +5,8 @@
 
 ## Installation
 
-1. Clone the project `git clone git@github.com:vukhanhtruong/nodejs-api-boilerplate.git`.
-2. Install dependencies `yarn install` or `npm i`
-3. Copy `.env.example` to `.env` file.
+1. Install dependencies `yarn install` or `npm i`
+2. Copy `.env.example` to `.env` file.
 
 ---
 
