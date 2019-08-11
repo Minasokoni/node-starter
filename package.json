@@ -9,7 +9,9 @@
     "build": "babel -s -d ./dist ./src --copy-files",
     "prestart": "npm run build",
     "start": "node dist/index.js",
-    "knex": "node -r reify ./node_modules/.bin/knex"
+    "knex": "node -r reify ./node_modules/.bin/knex",
+    "db:migrate": "yarn knex migrate:latest",
+    "db:seed": "yarn knex seed:run"
   },
   "author": "Robert Barnwell <robert@robertismy.name>",
   "license": "ISC",
