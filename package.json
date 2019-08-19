@@ -1,6 +1,6 @@
 {
   "name": "starter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Node Application Boilerplate",
   "main": "dist/index.js",
   "scripts": {
@@ -14,6 +14,9 @@
     "db:seed": "yarn knex seed:run"
   },
   "author": "Robert Barnwell <robert@robertismy.name>",
+  "repository": {
+    "url": "https://github.com/Minasokoni/node-starter"
+  },
   "license": "ISC",
   "devDependencies": {
     "@babel/cli": "^7.5.5",
