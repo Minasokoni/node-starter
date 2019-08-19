@@ -6,7 +6,7 @@ export default (knex) => {
     name: 'User',
     tableName: 'users',
     selectableProps: [
-      'id',
+      'uuid',
       'firstname',
       'lastname',
       'email',

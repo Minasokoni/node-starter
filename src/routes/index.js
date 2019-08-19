@@ -1,12 +1,9 @@
 import { Router } from 'express'
-import saveIncompleteUser from '../controllers/user'
+import { saveIncompleteUser, saveUser } from '../controllers/user'
 
 const routes = new Router()
 
-routes.get('/', (req, res) => {
-  res.render('pages/index', req.query)
-})
-
+routes.get('/', saveUser)
 routes.post('/incomplete', saveIncompleteUser)
 
 export default routes

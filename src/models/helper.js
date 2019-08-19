@@ -32,15 +32,15 @@ export default ({
     .where({ id })
     .timeout(timeout)
 
-  const update = (id, props) => {
-    delete props.id // not allowed to set `id`
-
+  const update = (uuid, props) => {
+    delete props.uuid
     return knex.update(props)
       .from(tableName)
-      .where({ id })
+      .where({ uuid })
       .returning(selectableProps)
       .timeout(timeout)
   }
+
 
   const destroy = id => knex.del()
     .from(tableName)
